@@ -3,34 +3,87 @@ import svgwrite
 from svgwrite import cm, inch
 
 
-hda = hou.pwd()
-geo = hda.node('IN').geometry()
-prims = geo.prims()
+# Create AxiDraw
+ad = axidraw.AxiDraw()
+ad.plot_setup()
 
-   
 
+
+def pagePresetToCustom():
+    hou.parm('preset').set(0)
+
+def pagePresets():
+
+    unitsPar = hou.parm('units').evalAsInt()
+    preset = hou.parm('preset').evalAsInt()
+
+    if preset == 0 :
+        return
+
+    # A3 Landscape
+    if preset == 1:
+        sizeX = 420
+        sizeY = 297
+    # A4 Portrait
+    if preset == 2:
+        sizeX = 210
+        sizeY = 297
+    # A4 Landscape
+    if preset == 3:
+        sizeX = 297
+        sizeY = 210
+    # A5 Portrait
+    if preset == 4:
+        sizeX = 148
+        sizeY = 210        
+    # A5 Landscape
+    if preset == 5:
+        sizeX = 210
+        sizeY = 148
+        
+    if unitsPar == 0 :
+        sizeX *= 0.0393701
+        sizeY *= 0.0393701
+    if unitsPar == 1 :
+        sizeX *= 0.1
+        sizeY *= 0.1
+        
+    hou.parm('sizex').set(sizeX)
+    hou.parm('sizey').set(sizeY)
+
+
+    
+    
+    
+    
 def geo2svg():
-    print('--------------------')
+    hda = hou.pwd()
+    geo = hda.node('GEO').geometry()
+    prims = geo.prims()
+
     svg_out = hou.parm('svg_out').evalAsString()
     unitsPar = hou.parm('units').evalAsInt()
+    
+    pagePresets(unitsPar)
+
     sizeX = hou.parmTuple('size').eval()[0]
     sizeY = hou.parmTuple('size').eval()[1]
     
-    
     un = ''
     if unitsPar == 0 :
-        un = 'cm'
-    elif unitsPar == 1 :
         un = 'in'
+    elif unitsPar == 1 :
+        un = 'cm'
+    elif unitsPar == 2 :
+        un = 'mm'
 
-    
-    sXstr = str(sizeX)+un
-    
+        
+        
     svg = svgwrite.Drawing(
         filename=svg_out,
         size=(str(sizeX)+un, str(sizeY)+un), viewBox=('0 0 '+str(sizeX)+' '+str(sizeY) )
     )
-    
+    #############
     
 
     for pr in range(0, len(prims)):
@@ -58,31 +111,87 @@ def geo2svg():
 
 
 
+def updateOptions():
+    global ad
+    
+    # OPTIONS
+    ad.options.units = hou.parm('units').evalAsInt()
+    
+    ad.options.speed_pendown = hou.parm('speed_pendown').evalAsInt()
+    ad.options.speed_penup = hou.parm('speed_penup').evalAsInt()
+    ad.options.accel = hou.parm('accel').evalAsInt()
+    ad.options.pen_pos_down = hou.parm('pen_down').evalAsInt()
+    ad.options.pen_pos_up = hou.parm('pen_up').evalAsInt()
 
+    ad.options.pen_rate_lower = hou.parm('pen_rate_lower').evalAsInt()
+    ad.options.pen_rate_raise = hou.parm('pen_rate_raise').evalAsInt()
 
-
-
-
-def plot():
-
-    svg = geo2svg()
-
-    ad = axidraw.AxiDraw()             # Create class instance
-    ad.plot_setup(svg.tostring())    # Parse the SVG 
-    ad.options.speed_pendown = 110 # Set maximum pen-down speed to 50%
-    ad.options.speed_penup = 110 # Set maximum pen-down speed to 50%
-    ad.plot_run()   # plot the document
+    ad.options.pen_delay_down = hou.parm('pen_delay_down').evalAsInt()
+    ad.options.pen_delay_up = hou.parm('pen_delay_up').evalAsInt()
+    
+    ad.options.const_speed = hou.parm('const_speed').evalAsInt()
+    
+    ad.options.model = hou.parm('model').evalAsInt() + 1
     
 
 
+
+    
+
+def plot():
+    global ad
+
+        
+    svg = geo2svg()
+    ad.plot_setup(svg.tostring())    # Parse the SVG
+    ad.options.mode = "plot"
+    
+    updateOptions()    
+   
+    #PLOT
+    ad.plot_run()
+    
+
+
+def align():
+    global ad
+    ad.options.mode = "align"
+    ad.plot_run()
+    print('Motors Off')
+    
+def toggle():
+    global ad
+    updateOptions()
+    ad.options.mode = "toggle"
+    ad.plot_run()
+
+
+def home():
+    global ad
+    ad.options.mode = "res_home"
+    ad.plot_run()
+
+def resume():
+    global ad
+    ad.options.mode = "res_plot"
+    ad.plot_run()
 
     
 def save():
         geo2svg().save()
-        print('Saved SVG')
     
     
 
+def estimate():
+    print("\n")
+    global ad
+    svg = geo2svg()
+    ad.plot_setup(svg.tostring())    # Parse the SVG
+    updateOptions()
+    
+    ad.options.preview=1
+    ad.options.report_time=1
+    ad.plot_run()
+    
 def test():
-    print('ok')
-    print(geo)
+    print('test')
