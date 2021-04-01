@@ -1,2 +1,3 @@
 # houdini_axidraw_plot
-HDA that prints straight to axidraw
+
+Houdini Digital Asset, wrapper for AxiDraw Python API which provides most of available functionalities and print polygon lines (in XY plane) straight to the plotter.
