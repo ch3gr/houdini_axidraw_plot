@@ -54,17 +54,15 @@ def pagePresets():
 
     
     
-    
-    
-def geo2svg():
+def geo2svg( geo ):
     hda = hou.pwd()
-    geo = hda.node('GEO').geometry()
+    geo = hda.node(geo).geometry()
     prims = geo.prims()
 
     svg_out = hou.parm('svg_out').evalAsString()
     unitsPar = hou.parm('units').evalAsInt()
     
-    pagePresets(unitsPar)
+    pagePresets()
 
     sizeX = hou.parmTuple('size').eval()[0]
     sizeY = hou.parmTuple('size').eval()[1]
@@ -120,8 +118,8 @@ def updateOptions():
     ad.options.speed_pendown = hou.parm('speed_pendown').evalAsInt()
     ad.options.speed_penup = hou.parm('speed_penup').evalAsInt()
     ad.options.accel = hou.parm('accel').evalAsInt()
-    ad.options.pen_pos_down = hou.parm('pen_down').evalAsInt()
-    ad.options.pen_pos_up = hou.parm('pen_up').evalAsInt()
+    ad.options.pen_pos_down = hou.parm('pen_pos_down').evalAsInt()
+    ad.options.pen_pos_up = hou.parm('pen_pos_up').evalAsInt()
 
     ad.options.pen_rate_lower = hou.parm('pen_rate_lower').evalAsInt()
     ad.options.pen_rate_raise = hou.parm('pen_rate_raise').evalAsInt()
@@ -133,16 +131,45 @@ def updateOptions():
     
     ad.options.model = hou.parm('model').evalAsInt() + 1
     
-
+    ad.options.auto_rotate = False
+    ad.options.report_time = True
+    
 
 
     
+def trace( square ):
+    global ad
+    
+    if square == 0:
+        svg = geo2svg('PAGE')
+    if square == 1:
+        svg = geo2svg('BOUNDS')
 
+    ad.plot_setup(svg.tostring())    # Parse the SVG
+    ad.options.mode = "plot"
+    updateOptions()    
+    
+    ad.options.speed_pendown = 110
+    ad.options.speed_penup = 110
+    ad.options.pen_pos_down = hou.parm('pen_pos_up').evalAsInt()
+    ad.options.pen_pos_up = hou.parm('pen_pos_up').evalAsInt()
+
+    ad.options.pen_rate_lower = 100
+    ad.options.pen_rate_raise = 100
+    ad.options.pen_delay_down = 0
+    ad.options.pen_delay_up = 0
+   
+    #PLOT
+    ad.plot_run()
+    return
+    
+
+    
+    
 def plot():
     global ad
-
         
-    svg = geo2svg()
+    svg = geo2svg('GEO')
     ad.plot_setup(svg.tostring())    # Parse the SVG
     ad.options.mode = "plot"
     
@@ -178,14 +205,15 @@ def resume():
 
     
 def save():
-        geo2svg().save()
+        geo2svg('GEO').save()
+        print("SVG saved : " + hou.parm('svg_out').evalAsString())
     
     
 
 def estimate():
     print("\n")
     global ad
-    svg = geo2svg()
+    svg = geo2svg('GEO')
     ad.plot_setup(svg.tostring())    # Parse the SVG
     updateOptions()
     
