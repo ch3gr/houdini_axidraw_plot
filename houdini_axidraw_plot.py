@@ -1,3 +1,4 @@
+# https://axidraw.com/doc/py_api/#
 from axidrawinternal import axidraw
 import svgwrite
 from svgwrite import cm, inch
@@ -132,7 +133,7 @@ def updateOptions():
     ad.options.model = hou.parm('model').evalAsInt() + 1
     
     ad.options.auto_rotate = False
-    ad.options.report_time = True
+    ad.options.report_time = hou.parm('info').evalAsInt()
     
 
 
@@ -172,7 +173,7 @@ def plot():
     svg = geo2svg('GEO')
     ad.plot_setup(svg.tostring())    # Parse the SVG
     ad.options.mode = "plot"
-    
+
     updateOptions()    
    
     #PLOT
@@ -201,7 +202,7 @@ def home():
 def resume():
     global ad
     ad.options.mode = "res_plot"
-    ad.plot_run()
+    ad.plot_run(True)
 
     
 def save():
@@ -218,7 +219,7 @@ def estimate():
     updateOptions()
     
     ad.options.preview=1
-    ad.options.report_time=1
+    ad.options.report_time = 1
     ad.plot_run()
     
 def test():
