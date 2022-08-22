@@ -12,20 +12,30 @@ https://www.sidefx.com/download/daily-builds/
 
 You will also have to install the two python libraries below, either using PIP or manually. These are not provided in this repo, so please read their respective licenses.
 
+
 The latest Axidraw API:
+
 `pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip`
+
 https://github.com/evil-mad/axidraw
 
 
 svgwrite:
+
 `pip install svgwrite`
+
 https://github.com/mozman/svgwrite/
 
 
+
 You can install these libraries only for Houdini's python.
+
 Download https://bootstrap.pypa.io/get-pip.py and install it using hython from houdini's /bin directory:
+
 `hython <Download directory>/get-pip.py`
+
 then you can install like this :
+
 `hython -m pip <module>`
   
 
