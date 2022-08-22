@@ -1,8 +1,10 @@
 # https://axidraw.com/doc/py_api/#
-from axidrawinternal import axidraw
+
+# from axidrawinternal import axidraw   # This used to work, but not any more
+from pyaxidraw import axidraw
+
 import svgwrite
 from svgwrite import cm, inch
-
 
 # Create AxiDraw
 ad = axidraw.AxiDraw()
