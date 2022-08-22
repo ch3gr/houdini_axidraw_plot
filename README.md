@@ -6,7 +6,7 @@ The HDA is made using Houdini's indie license and it will most likely downgrade 
 
 
 ## Installation
-You will need Houdini 18.5 running Python3.7 . By default houdini ship with Python2.7 so you may need to instal the appropriate build.
+If you use Houdini 18, make sure you have a Python3.7 build. By default houdini 18 ship with Python2.7 so you may need to instal the appropriate build.
 https://www.sidefx.com/download/daily-builds/
 
 
@@ -22,8 +22,11 @@ svgwrite:
 https://github.com/mozman/svgwrite/
 
 
+You can install these libraries only for Houdini's python.
+Download https://bootstrap.pypa.io/get-pip.py and install it using hython from houdini's /bin directory:
+`hython <Download directory>/get-pip.py`
+then you can install like this :
+`hython -m pip <module>`
+  
 
-## To DO
 
-- Add goto functionality to allow accurate registration of multi page prints.
-- Spawn a seperate process while printing, so houdini doesn't freeze.
