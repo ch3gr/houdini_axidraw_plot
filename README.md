@@ -7,28 +7,25 @@ The HDA is made using Houdini's indie license and it will most likely downgrade 
 
 ## Installation
 If you use Houdini 18, make sure you have a Python3.7 build. By default houdini 18 ship with Python2.7 so you may need to instal the appropriate build.
-https://www.sidefx.com/download/daily-builds/
+https://www.sidefx.com/download/daily-builds/  
 
+You will also have to install the two python libraries below, either using PIP or manually. These are not provided in this repo, so please read their respective licenses.  
 
-You will also have to install the two python libraries below, either using PIP or manually. These are not provided in this repo, so please read their respective licenses.
-
-
-The latest Axidraw API:
-`pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip`
+**The latest Axidraw API**  
+`pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip`  
 https://github.com/evil-mad/axidraw
 
 
-svgwrite:
-`pip install svgwrite`
+**svgwrite**  
+`pip install svgwrite`  
 https://github.com/mozman/svgwrite/
 
 
-
-You can install these libraries only for Houdini's python.
-Download https://bootstrap.pypa.io/get-pip.py and install it using hython from houdini's /bin directory:
-`hython <Download directory>/get-pip.py`
-then you can install like this :
-`hython -m pip <module>`
+You can install these libraries directly in houdini's python.  
+Download https://bootstrap.pypa.io/get-pip.py and install it using hython from houdini's /bin directory:  
+`hython <Download directory>/get-pip.py`  
+then you can install like this :  
+`hython -m pip <module>`  
   
 
 
