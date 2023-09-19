@@ -26,6 +26,10 @@ Download https://bootstrap.pypa.io/get-pip.py and install it using hython from h
 `hython <Download directory>/get-pip.py`  
 then you can install like this :  
 `hython -m pip <module>`  
-  
+
+Or open a Windows/Shell and install like this
+`hython -m pip install svgwrite'
+`hython -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip'
+
 
 
