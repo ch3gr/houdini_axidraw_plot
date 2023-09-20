@@ -18,9 +18,9 @@ https://github.com/evil-mad/axidraw
 https://github.com/mozman/svgwrite/
 
 
-Open a Windows/Shell and use these commands to install
-`hython -m pip install svgwrite`
-`hython -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip`
+Open a Windows/Shell and use these commands to install:  
+`hython -m pip install svgwrite`  
+`hython -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip`  
 
 
 
