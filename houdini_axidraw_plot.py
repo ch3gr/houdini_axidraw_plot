@@ -1,8 +1,6 @@
 # https://axidraw.com/doc/py_api/#
-
 # from axidrawinternal import axidraw   # This used to work, but not any more
 from pyaxidraw import axidraw
-
 import svgwrite
 from svgwrite import cm, inch
 
@@ -185,12 +183,17 @@ def plot():
 
 def align():
     global ad
+    ad = axidraw.AxiDraw()
+    ad.plot_setup()
+    updateOptions()
     ad.options.mode = "align"
     ad.plot_run()
     print('Motors Off')
     
 def toggle():
     global ad
+    ad = axidraw.AxiDraw()
+    ad.plot_setup()
     updateOptions()
     ad.options.mode = "toggle"
     ad.plot_run()
@@ -198,11 +201,17 @@ def toggle():
 
 def home():
     global ad
+    ad = axidraw.AxiDraw()
+    ad.plot_setup()
+    updateOptions()
     ad.options.mode = "res_home"
     ad.plot_run()
 
 def resume():
     global ad
+    ad = axidraw.AxiDraw()
+    ad.plot_setup()
+    updateOptions()
     ad.options.mode = "res_plot"
     ad.plot_run(True)
 
@@ -225,4 +234,10 @@ def estimate():
     ad.plot_run()
     
 def test():
-    print('test')
+    print('>>>  >>>')
+    global ad
+    ad = axidraw.AxiDraw()
+    ad.plot_setup()
+    ad.options.mode = "sysinfo"
+    ad.plot_run()
+    print('<<<  <<<<')
