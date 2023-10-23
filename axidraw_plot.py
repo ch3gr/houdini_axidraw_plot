@@ -8,9 +8,7 @@ from svgwrite import cm, inch
 ad = axidraw.AxiDraw()
 ad.plot_setup()
 
-bob = 1
-
-
+svgResume = None
 
 def pagePresetToCustom():
     hou.parm('preset').set(0)
@@ -171,6 +169,7 @@ def trace( square ):
     
 def plot():
     global ad
+    global svgResume
         
     svg = geo2svg('GEO')
     ad.plot_setup(svg.tostring())    # Parse the SVG
@@ -179,48 +178,90 @@ def plot():
     updateOptions()    
    
     #PLOT
-    ad.plot_run()
+    svgResume = ad.plot_run(True)
     
 
 
 def align():
     global ad
-    # ad = axidraw.AxiDraw()
     ad.plot_setup()
     updateOptions()
     ad.options.mode = "align"
     ad.plot_run()
-    print('Motors Off')
+    print('Axidraw_Plot: Motors Off')
     
 def toggle():
+    # print('Axidraw_Plot: Toggle')
     global ad
     # ad = axidraw.AxiDraw()
+    print( ad )
     ad.plot_setup()
     updateOptions()
     ad.options.mode = "toggle"
     ad.plot_run()
 
+    print( ad )
 
-def home():
+
+
+
+def up():
+    # print('Axidraw_Plot: Toggle')
     global ad
     # ad = axidraw.AxiDraw()
+    print( ad )
     ad.plot_setup()
     updateOptions()
-    ad.options.mode = "res_home"
+    ad.options.mode = "manual"
+    ad.options.manual_cmd = "raise_pen"
     ad.plot_run()
 
-def resume():
+    print( ad )
+
+def down():
+    # print('Axidraw_Plot: Toggle')
     global ad
     # ad = axidraw.AxiDraw()
+    print( ad )
     ad.plot_setup()
     updateOptions()
-    ad.options.mode = "res_plot"
-    ad.plot_run(True)
+    ad.options.mode = "manual"
+    ad.options.manual_cmd = "lower_pen"
+    ad.plot_run()
 
+    print( ad )
+
+
+
+def home():
+    global svgResume
+    if( svgResume != None ):
+        global ad
+        ad.plot_setup(svgResume)
+        updateOptions()
+        ad.options.mode = "res_home"
+        print('Axidraw_Plot: Home')
+        ad.plot_run()
+        svgResume = None
+    else:
+        print('Axidraw_Plot: No plotter resume data')
+
+def resume():
+    global svgResume
+    if( svgResume != None ):
+        global ad
+        ad.plot_setup(svgResume)
+        updateOptions()
+        ad.options.mode = "res_plot"
+        print('Axidraw_Plot: Resume')
+        ad.plot_run(True)
+        svgResume = None
+    else:
+        print('Axidraw_Plot: No plotter resume data')
     
 def save():
         geo2svg('GEO').save()
-        print("SVG saved : " + hou.parm('svg_out').evalAsString())
+        print("Axidraw_Plot: SVG saved > " + hou.parm('svg_out').evalAsString())
     
     
 
@@ -236,17 +277,12 @@ def estimate():
     ad.plot_run()
     
 def test():
-    print('>>>  >>>')
-    global bob
-    # print(bob)
+    print('Axidraw_Plot: Test')
     global ad
-    # ad = axidraw.AxiDraw()
+    ad = axidraw.AxiDraw()
+    print( ad )
     ad.plot_setup()
     ad.options.mode = "sysinfo"
     ad.plot_run()
     print('<<<  <<<<')
     
-def test2():
-    global bob
-    bob = bob + 1
-    print(bob)
