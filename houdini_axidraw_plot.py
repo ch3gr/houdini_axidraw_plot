@@ -8,6 +8,8 @@ from svgwrite import cm, inch
 ad = axidraw.AxiDraw()
 ad.plot_setup()
 
+bob = 1
+
 
 
 def pagePresetToCustom():
@@ -183,7 +185,7 @@ def plot():
 
 def align():
     global ad
-    ad = axidraw.AxiDraw()
+    # ad = axidraw.AxiDraw()
     ad.plot_setup()
     updateOptions()
     ad.options.mode = "align"
@@ -192,7 +194,7 @@ def align():
     
 def toggle():
     global ad
-    ad = axidraw.AxiDraw()
+    # ad = axidraw.AxiDraw()
     ad.plot_setup()
     updateOptions()
     ad.options.mode = "toggle"
@@ -201,7 +203,7 @@ def toggle():
 
 def home():
     global ad
-    ad = axidraw.AxiDraw()
+    # ad = axidraw.AxiDraw()
     ad.plot_setup()
     updateOptions()
     ad.options.mode = "res_home"
@@ -209,7 +211,7 @@ def home():
 
 def resume():
     global ad
-    ad = axidraw.AxiDraw()
+    # ad = axidraw.AxiDraw()
     ad.plot_setup()
     updateOptions()
     ad.options.mode = "res_plot"
@@ -235,9 +237,16 @@ def estimate():
     
 def test():
     print('>>>  >>>')
+    global bob
+    # print(bob)
     global ad
-    ad = axidraw.AxiDraw()
+    # ad = axidraw.AxiDraw()
     ad.plot_setup()
     ad.options.mode = "sysinfo"
     ad.plot_run()
     print('<<<  <<<<')
+    
+def test2():
+    global bob
+    bob = bob + 1
+    print(bob)
