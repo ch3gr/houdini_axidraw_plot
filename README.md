@@ -6,10 +6,17 @@ The HDA is made using Houdini's indie license and it will most likely downgrade 
 
 
 ## Installation
-If you use Houdini 18, make sure you have a Python3.7 build. By default houdini 18 ship with Python2.7 so you may need to instal the appropriate build.
+
+Inside Houdini, open a Shell under the Windows menu and use these commands to install:  
+`hython -m pip install svgwrite`  
+`hython -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip`  
+
+Tested and works in Houdini 19.5
+
+If you use Houdini 18 or older, make sure you have a Python3.7 build. By default houdini 18 ship with Python2.7 so you may need to instal the appropriate build.
 https://www.sidefx.com/download/daily-builds/  
 
-You will also have to install the two python libraries below, either using PIP or manually. These are not provided in this repo, so please read their respective licenses.  
+You can also install the two python libraries manually. These are not provided in this repo, so please read their respective licenses.  
 
 **The latest Axidraw API**  
 https://github.com/evil-mad/axidraw
@@ -18,9 +25,6 @@ https://github.com/evil-mad/axidraw
 https://github.com/mozman/svgwrite/
 
 
-Open a Windows/Shell and use these commands to install:  
-`hython -m pip install svgwrite`  
-`hython -m pip install https://cdn.evilmadscientist.com/dl/ad/public/AxiDraw_API.zip`  
 
 
 
