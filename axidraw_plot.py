@@ -191,45 +191,37 @@ def align():
     print('Axidraw_Plot: Motors Off')
     
 def toggle():
-    # print('Axidraw_Plot: Toggle')
-    global ad
-    # ad = axidraw.AxiDraw()
-    print( ad )
-    ad.plot_setup()
-    updateOptions()
-    ad.options.mode = "toggle"
-    ad.plot_run()
+    print('Axidraw_Plot: Toggle')
+    ad_temp = axidraw.AxiDraw()
+    ad_temp.plot_setup()
+    # updateOptions()
+    ad_temp.options.pen_rate_lower = 100
+    ad_temp.options.pen_rate_raise = 100
+    ad_temp.options.mode = "toggle"
+    ad_temp.plot_run()
 
-    print( ad )
 
 
 
 
 def up():
-    # print('Axidraw_Plot: Toggle')
-    global ad
-    # ad = axidraw.AxiDraw()
-    print( ad )
-    ad.plot_setup()
-    updateOptions()
-    ad.options.mode = "manual"
-    ad.options.manual_cmd = "raise_pen"
-    ad.plot_run()
+    print('Axidraw_Plot: Up')
+    ad_temp = axidraw.AxiDraw()
+    ad_temp.plot_setup()
+    # updateOptions()
+    ad_temp.options.mode = "manual"
+    ad_temp.options.manual_cmd = "raise_pen"
+    ad_temp.plot_run()
 
-    print( ad )
 
 def down():
-    # print('Axidraw_Plot: Toggle')
-    global ad
-    # ad = axidraw.AxiDraw()
-    print( ad )
-    ad.plot_setup()
-    updateOptions()
-    ad.options.mode = "manual"
-    ad.options.manual_cmd = "lower_pen"
-    ad.plot_run()
-
-    print( ad )
+    print('Axidraw_Plot: Down')
+    ad_temp = axidraw.AxiDraw()
+    ad_temp.plot_setup()
+    # updateOptions()
+    ad_temp.options.mode = "manual"
+    ad_temp.options.manual_cmd = "lower_pen"
+    ad_temp.plot_run()
 
 
 
@@ -267,6 +259,7 @@ def save():
 
 def estimate():
     print("\n")
+    print('Axidraw_Plot: Down')
     global ad
     svg = geo2svg('GEO')
     ad.plot_setup(svg.tostring())    # Parse the SVG
@@ -279,7 +272,7 @@ def estimate():
 def test():
     print('Axidraw_Plot: Test')
     global ad
-    ad = axidraw.AxiDraw()
+    # ad = axidraw.AxiDraw()
     print( ad )
     ad.plot_setup()
     ad.options.mode = "sysinfo"
