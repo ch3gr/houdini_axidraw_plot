@@ -24,14 +24,14 @@ def pagePresets():
     # A3 Landscape
     if preset == 1:
         sizeX = 420
-        sizeY = 297
+        sizeY = 296
     # A4 Portrait
     if preset == 2:
         sizeX = 210
-        sizeY = 297
+        sizeY = 296
     # A4 Landscape
     if preset == 3:
-        sizeX = 297
+        sizeX = 296
         sizeY = 210
     # A5 Portrait
     if preset == 4:
@@ -133,7 +133,7 @@ def updateOptions():
     ad.options.model = hou.parm('model').evalAsInt() + 1
     
     ad.options.auto_rotate = False
-    ad.options.report_time = hou.parm('info').evalAsInt()
+    ad.options.report_time = hou.parm('verbose').evalAsInt()
     
 
 
@@ -183,15 +183,19 @@ def plot():
 
 
 def align():
+    if hou.node(".").parm('verbose').eval() :
+        print('Axidraw_Plot: Motors Off')
+
     global ad
     ad.plot_setup()
     updateOptions()
     ad.options.mode = "align"
     ad.plot_run()
-    print('Axidraw_Plot: Motors Off')
     
 def toggle():
-    print('Axidraw_Plot: Toggle')
+    if hou.node(".").parm('verbose').eval() :
+        print('Axidraw_Plot: Toggle')
+
     ad_temp = axidraw.AxiDraw()
     ad_temp.plot_setup()
     # updateOptions()
@@ -205,7 +209,9 @@ def toggle():
 
 
 def up():
-    print('Axidraw_Plot: Up')
+    if hou.node(".").parm('verbose').eval() :
+        print('Axidraw_Plot: Up')
+
     ad_temp = axidraw.AxiDraw()
     ad_temp.plot_setup()
     # updateOptions()
@@ -215,7 +221,9 @@ def up():
 
 
 def down():
-    print('Axidraw_Plot: Down')
+    if hou.node(".").parm('verbose').eval() :
+        print('Axidraw_Plot: Down')
+
     ad_temp = axidraw.AxiDraw()
     ad_temp.plot_setup()
     # updateOptions()
@@ -228,29 +236,36 @@ def down():
 def home():
     global svgResume
     if( svgResume != None ):
+        if hou.node(".").parm('verbose').eval() :
+            print('Axidraw_Plot: Home')
+
         global ad
         ad.plot_setup(svgResume)
         updateOptions()
         ad.options.mode = "res_home"
-        print('Axidraw_Plot: Home')
         ad.plot_run()
         svgResume = None
     else:
-        print('Axidraw_Plot: No plotter resume data')
+        if hou.node(".").parm('verbose').eval() :
+            print('Axidraw_Plot: No plotter resume data')
 
 def resume():
     global svgResume
     if( svgResume != None ):
+        if hou.node(".").parm('verbose').eval() :
+            print('Axidraw_Plot: Resume')
+
         global ad
         ad.plot_setup(svgResume)
         updateOptions()
         ad.options.mode = "res_plot"
-        print('Axidraw_Plot: Resume')
         ad.plot_run(True)
         svgResume = None
     else:
-        print('Axidraw_Plot: No plotter resume data')
+        if hou.node(".").parm('verbose').eval() :
+            print('Axidraw_Plot: No plotter resume data')
     
+
 def save():
         geo2svg('GEO').save()
         print("Axidraw_Plot: SVG saved > " + hou.parm('svg_out').evalAsString())
@@ -259,7 +274,7 @@ def save():
 
 def estimate():
     print("\n")
-    print('Axidraw_Plot: Down')
+    print('Axidraw_Plot: ')
     global ad
     svg = geo2svg('GEO')
     ad.plot_setup(svg.tostring())    # Parse the SVG
@@ -268,14 +283,25 @@ def estimate():
     ad.options.preview=1
     ad.options.report_time = 1
     ad.plot_run()
-    
-def test():
-    print('Axidraw_Plot: Test')
+
+
+def printInfo():
+    print('Axidraw_Plot: Info')
     global ad
-    # ad = axidraw.AxiDraw()
-    print( ad )
+    ad = axidraw.AxiDraw()
     ad.plot_setup()
     ad.options.mode = "sysinfo"
     ad.plot_run()
-    print('<<<  <<<<')
+    print('')
+    
+
+    
+def test():
+    print('Axidraw_Plot: Test')
+
+    
+    # print( hou.node("..").parm('verbose').eval()  )
+    print( hou.node(".").parm('verbose').eval() )
+
+    print('')
     
