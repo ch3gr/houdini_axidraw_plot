@@ -226,7 +226,10 @@ def toggle():
     # updateOptions()
     ad_temp.options.pen_rate_lower = 100
     ad_temp.options.pen_rate_raise = 100
+    ad_temp.options.pen_pos_down = hou.parm('pen_pos_down').evalAsInt()
+    ad_temp.options.pen_pos_up = hou.parm('pen_pos_up').evalAsInt()
     ad_temp.options.mode = "toggle"
+    
     ad_temp.plot_run()
 
 
