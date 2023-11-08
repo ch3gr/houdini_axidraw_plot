@@ -166,6 +166,31 @@ def trace( square ):
     
 
     
+def markCorners():
+    global ad
+
+    svg = geo2svg('CORNERS')
+
+    ad.plot_setup(svg.tostring())    # Parse the SVG
+    ad.options.mode = "plot"
+    updateOptions()    
+    
+    # ad.options.speed_pendown = 50
+    # ad.options.speed_penup = 110
+    # ad.options.pen_pos_down = hou.parm('pen_pos_up').evalAsInt()
+    # ad.options.pen_pos_up = hou.parm('pen_pos_up').evalAsInt()
+
+    # ad.options.pen_rate_lower = 100
+    # ad.options.pen_rate_raise = 100
+    # ad.options.pen_delay_down = 0
+    # ad.options.pen_delay_up = 0
+   
+    #PLOT
+    ad.plot_run()
+    return
+    
+
+    
     
 def plot():
     global ad
