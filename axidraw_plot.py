@@ -137,6 +137,7 @@ def updateOptions(ad):
     ad.options.const_speed = hou.parm('const_speed').evalAsInt()
     
     ad.options.model = hou.parm('model').evalAsInt() + 1
+    ad.options.penlift = hou.parm('servo').evalAsInt() + 1
     
     ad.options.auto_rotate = False
     ad.options.report_time = hou.parm('verbose').evalAsInt()
