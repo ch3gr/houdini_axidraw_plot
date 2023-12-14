@@ -4,11 +4,9 @@ from pyaxidraw import axidraw
 import svgwrite
 from svgwrite import cm, inch
 
-# Create AxiDraw
-# ad = axidraw.AxiDraw()
-# ad.plot_setup()
 
 svgResume = None
+extended = False
 
 
 
@@ -42,7 +40,7 @@ def pagePresets():
     # A5 Landscape
     if preset == 5:
         sizeX = 210
-        sizeY = 148
+        sizeY = 148-10
         
     if unitsPar == 0 :
         sizeX *= 0.0393701
@@ -117,7 +115,6 @@ def geo2svg( geo ):
 
 
 def updateOptions(ad):
-    # global ad
     
     # OPTIONS
     ad.options.units = hou.parm('units').evalAsInt()
@@ -150,7 +147,6 @@ def updateOptions(ad):
 
     
 def trace( square ):
-    # global ad
     
     if square == 0:
         svg = geo2svg('PAGE')
@@ -180,7 +176,6 @@ def trace( square ):
 
     
 def markCorners():
-    # global ad
 
     svg = geo2svg('CORNERS')
 
@@ -188,16 +183,10 @@ def markCorners():
     ad.plot_setup(svg.tostring())    # Parse the SVG
     ad.options.mode = "plot"
     ad = updateOptions(ad)
-    
-    # ad.options.speed_pendown = 50
-    # ad.options.speed_penup = 110
-    # ad.options.pen_pos_down = hou.parm('pen_pos_up').evalAsInt()
-    # ad.options.pen_pos_up = hou.parm('pen_pos_up').evalAsInt()
+    ad.options.speed_penup = 100
+    ad.options.pen_delay_down = 100
+    ad.options.pen_delay_up = 100
 
-    # ad.options.pen_rate_lower = 100
-    # ad.options.pen_rate_raise = 100
-    # ad.options.pen_delay_down = 0
-    # ad.options.pen_delay_up = 0
    
     #PLOT
     ad.plot_run()
@@ -208,7 +197,6 @@ def markCorners():
 
     
 def plot():
-    # global ad
     global svgResume
         
     svg = geo2svg('GEO')
@@ -228,7 +216,6 @@ def align():
     if hou.node(".").parm('verbose').eval() :
         print('Axidraw_Plot: Motors Off')
 
-    # global ad
     ad = axidraw.AxiDraw()
     ad.plot_setup()
     ad = updateOptions(ad)
@@ -245,33 +232,47 @@ def toggle():
     ad = updateOptions(ad)
     ad.options.pen_rate_lower = 100
     ad.options.pen_rate_raise = 100
-    # ad.options.pen_pos_down = hou.parm('pen_pos_down').evalAsInt()
-    # ad.options.pen_pos_up = hou.parm('pen_pos_up').evalAsInt()
     ad.options.mode = "toggle"
-    print(ad)
     
     ad.plot_run()
 
 
 
-def tog():
+def extend():
+    global extended
 
-    ad_temp = axidraw.AxiDraw()
-    ad_temp.plot_setup()
-    updateOptions()
-    ad_temp.options.pen_rate_lower = 100
-    ad_temp.options.pen_rate_raise = 100
-    ad_temp.options.pen_pos_down = 30
-    ad_temp.options.pen_pos_up = 90
-    ad_temp.options.mode = "toggle"
-    print(ad_temp)
-    
-    ad_temp.plot_run()
+    if extended:
+        if hou.node(".").parm('verbose').eval() :
+            print('Axidraw_Plot: Retract Arm')
+    else:    
+        if hou.node(".").parm('verbose').eval() :
+            print('Axidraw_Plot: Extend Arm')
 
+    ad = axidraw.AxiDraw()
+    ad.plot_setup()
+    ad = updateOptions(ad)
+    ad.options.speed_penup = 110
+    ad.options.mode = "manual"
 
+    if extended:
+        ad.options.manual_cmd = "walk_home"
+        extended = False
+    else:
+        sizeY = hou.parmTuple('size').eval()[1]
+        unitsPar = hou.parm('units').evalAsInt()
+        if unitsPar == 1 :
+            sizeY *= 0.393701
+        if unitsPar == 2 :
+            sizeY *= 0.0393701
 
+        ad.options.manual_cmd = "walk_y"
+        ad.options.dist = sizeY
+        # ad.options.dist = 1
+        extended = True
 
+    ad.plot_run()
 
+0.
 def up():
     if hou.node(".").parm('verbose').eval() :
         print('Axidraw_Plot: Up')
@@ -303,7 +304,6 @@ def home():
         if hou.node(".").parm('verbose').eval() :
             print('Axidraw_Plot: Home')
 
-        # global ad
         ad = axidraw.AxiDraw()
         ad.plot_setup(svgResume)
         ad = updateOptions(ad)
@@ -320,7 +320,6 @@ def resume():
         if hou.node(".").parm('verbose').eval() :
             print('Axidraw_Plot: Resume')
 
-        # global ad
         ad = axidraw.AxiDraw()
         ad.plot_setup(svgResume)
         ad = updateOptions(ad)
@@ -341,7 +340,6 @@ def save():
 def estimate():
     print("\n")
     print('Axidraw_Plot: ')
-    # global ad
     svg = geo2svg('GEO')
     ad = axidraw.AxiDraw()
     ad.plot_setup(svg.tostring())    # Parse the SVG
@@ -354,7 +352,6 @@ def estimate():
 
 def printInfo():
     print('Axidraw_Plot: Info')
-    # global ad
     ad = axidraw.AxiDraw()
     ad.plot_setup()
     ad.options.mode = "sysinfo"
@@ -365,7 +362,6 @@ def printInfo():
     
 def test():
     print('Axidraw_Plot: Test')
-    # global ad
     # print( ad )
     
     # print( hou.node("..").parm('verbose').eval()  )
