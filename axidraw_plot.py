@@ -198,7 +198,11 @@ def markCorners():
     
 def plot():
     global svgResume
-        
+
+    # Start
+    if hou.node(".").parm('verbose').eval() :
+        print('Axidraw_Plot: Start Plotting')
+
     svg = geo2svg('GEO')
 
     ad = axidraw.AxiDraw()
@@ -208,6 +212,13 @@ def plot():
    
     #PLOT
     svgResume = ad.plot_run(True)
+    
+    # Turn off motors
+    align()
+
+    # Done
+    if hou.node(".").parm('verbose').eval() :
+        print('Axidraw_Plot: Done')
     
 
 
@@ -272,7 +283,7 @@ def extend():
 
     ad.plot_run()
 
-0.
+
 def up():
     if hou.node(".").parm('verbose').eval() :
         print('Axidraw_Plot: Up')
@@ -359,12 +370,3 @@ def printInfo():
     print('')
     
 
-    
-def test():
-    print('Axidraw_Plot: Test')
-    # print( ad )
-    
-    # print( hou.node("..").parm('verbose').eval()  )
-    # print( hou.node(".").parm('verbose').eval() )
-    print('_____')
-    
