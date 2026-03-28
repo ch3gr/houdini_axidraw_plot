@@ -170,6 +170,10 @@ def trace( square ):
    
     #PLOT
     ad.plot_run()
+    
+    # Turn off motors
+    if hou.node(".").parm('turnOffMotors').eval() :
+        align()
     return
     
 
@@ -190,6 +194,10 @@ def markCorners():
    
     #PLOT
     ad.plot_run()
+    
+    # Turn off motors
+    if hou.node(".").parm('turnOffMotors').eval() :
+        align()
     return
     
 
@@ -199,28 +207,38 @@ def markCorners():
 def plot():
     global svgResume
 
-    # Start
-    if hou.node(".").parm('verbose').eval() :
-        print('Axidraw_Plot: Start Plotting')
+    node = hou.node(".")
+
+    if node.parm('verbose').eval():
+        print('\nAxidraw_Plot: Start Plotting')
 
     svg = geo2svg('GEO')
 
     ad = axidraw.AxiDraw()
-    ad.plot_setup(svg.tostring())    # Parse the SVG
+    ad.plot_setup(svg.tostring())
     ad = updateOptions(ad)
     ad.options.mode = "plot"
-   
-    #PLOT
+
+    # Keep this False so plot_run(True) can return the updated SVG on pause
+    ad.errors.button = False
+
+    # Run plot and capture SVG with resume data
     svgResume = ad.plot_run(True)
-    
-    # Turn off motors
-    align()
 
-    # Done
-    if hou.node(".").parm('verbose').eval() :
+    paused = (ad.errors.code == 102)
+
+    if paused:
+        if node.parm('verbose').eval():
+            print('Axidraw_Plot: Paused by hardware button')
+
+        return
+
+    # Normal finish
+    if hou.node(".").parm('turnOffMotors').eval() :
+        align()
+
+    if node.parm('verbose').eval():
         print('Axidraw_Plot: Done')
-    
-
 
 
 def align():
@@ -282,6 +300,8 @@ def extend():
         extended = True
 
     ad.plot_run()
+    
+
 
 
 def up():
@@ -324,6 +344,11 @@ def home():
     else:
         if hou.node(".").parm('verbose').eval() :
             print('Axidraw_Plot: No plotter resume data')
+            
+    # Turn off motors
+    if hou.node(".").parm('turnOffMotors').eval() :
+        align()
+        
 
 def resume():
     global svgResume
@@ -337,6 +362,11 @@ def resume():
         ad.options.mode = "res_plot"
         ad.plot_run(True)
         svgResume = None
+        
+        # Turn off motors
+        if hou.node(".").parm('turnOffMotors').eval() :
+            align()
+        
     else:
         if hou.node(".").parm('verbose').eval() :
             print('Axidraw_Plot: No plotter resume data')
